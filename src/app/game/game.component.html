@@ -1,0 +1,46 @@
+<nav class="navbar navbar-dark bg-dark px-3">
+    <h4 class="navbar-text text-white">Juego del Ahorcado</h4>
+    <span class="navbar-text text-gray p-2">Jugar</span>
+    <span class="navbar-text text-gray p-2" (click)="goScores()">Puntajes</span>
+    <span class="navbar-text text-gray ms-auto p-2">Bienvenido, {{ email }}</span>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="logOut()">Cerrar sesión</button>
+</nav>
+
+<div class="d-flex justify-content-center mt-4">
+    <div class="p-2 text-center">
+        <h1>Juego del Ahorcado</h1>
+        <svg width="200" height="300">
+            <circle *ngIf="tries <= 5" cx="150" cy="120" r="20" fill="black" /> <!-- cabeza -->
+            <line *ngIf="tries <= 4" x1="150" y1="140" x2="150" y2="200" stroke="black" /> <!-- cuerpo -->
+            <line *ngIf="tries <= 3" x1="150" y1="150" x2="130" y2="180" stroke="black" /> <!-- brazo izquierdo -->
+            <line *ngIf="tries <= 2" x1="150" y1="150" x2="170" y2="180" stroke="black" /> <!-- brazo derecho -->
+            <line *ngIf="tries <= 1" x1="150" y1="200" x2="130" y2="240" stroke="black" /> <!-- pierna izquierda -->
+            <line *ngIf="tries <= 0" x1="150" y1="200" x2="170" y2="240" stroke="black" /> <!-- pierna derecha -->
+        </svg>
+
+        <div class="mt-4">
+            <span style="font-size: 2em; letter-spacing: 10px;">
+                <ng-container *ngFor="let letter of displayedWord">{{ letter }}</ng-container>
+            </span>
+        </div>
+
+        <div class="mt-3">Letras incorrectas: {{ incorrectLetters.join(', ') }}</div>
+
+        <div class="mt-4">
+            <button *ngFor="let letter of alphabet" 
+                type="button" 
+                class="btn m-1" 
+                [ngClass]="{'btn-outline-info': !incorrectLetters.includes(letter) && !displayedWord.includes(letter), 
+                            'btn-danger': incorrectLetters.includes(letter)}"
+                (click)="checkLetter(letter)" 
+                [disabled]="incorrectLetters.includes(letter) || displayedWord.includes(letter)">
+                {{ letter }}
+            </button>
+        </div>
+
+        <div class="mt-4">Intentos restantes: {{ tries }}</div>
+        <div *ngIf="tries === 0" class="alert alert-danger mt-4">Perdiste! La palabra era: {{ word?.word }} 
+            <button type="button" class="btn btn-danger" (click)="restart()">Reiniciar</button>
+        </div>
+    </div>
+</div>

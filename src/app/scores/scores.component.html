@@ -1,0 +1,53 @@
+<nav class="navbar navbar-dark bg-dark px-3">
+    <h4 class="navbar-text text-white">Juego del Ahorcado</h4>
+    <span class="navbar-text text-gray p-2" (click)="goJugar()">Jugar</span>
+    <span class="navbar-text text-gray p-2">Puntajes</span>
+    <span class="navbar-text text-gray ms-auto p-2">Bienvenido, {{email}}</span>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="logOut()">Cerrar sesión</button>
+</nav>
+
+<div class="container mt-4">
+        <div class="card">
+        <div class="p-2 justify-content-center"><h3>Todos los puntajes</h3><div></div>
+          <div class="card-body">
+            <div class="row">
+                <div>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Jugador</th>
+                        <th>Palabra</th>
+                        <th>Intentos restantes</th>
+                        <th>Puntuación</th>
+                        <th>Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngIf="email === 'admin'; else userScores">
+                        <tr *ngFor="let score of scores; track: $index">
+                          <td>{{score.playerName}}</td>
+                          <td>{{score.word}}</td>
+                          <td>{{score.attemptsLeft}}</td>
+                          <td>{{score.score}}</td>
+                          <td>{{score.date | fecha }}</td>
+                        </tr>
+                      </ng-container>
+                      <ng-template #userScores>
+                        <tr *ngFor="let score of scores; track: $index">
+                          <ng-container *ngIf="score.playerName === email">
+                            <td>{{score.playerName}}</td>
+                            <td>{{score.word}}</td>
+                            <td>{{score.attemptsLeft}}</td>
+                            <td>{{score.score}}</td>
+                            <td>{{score.date | fecha }}</td>
+                          </ng-container>
+                        </tr>
+                      </ng-template>
+
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
